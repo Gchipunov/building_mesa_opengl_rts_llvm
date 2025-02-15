@@ -1,0 +1,149 @@
+What about a 3D game ?
+Here's an example of camera setup and unit selection code in C++ for a 3D game:
+Camera Setup
+
+C++
+// Camera class
+class Camera {
+public:
+  Camera(float x, float y, float z, float pitch, float yaw) 
+    : x_(x), y_(y), z_(z), pitch_(pitch), yaw_(yaw) {}
+
+  void setPosition(float x, float y, float z) {
+    x_ = x;
+    y_ = y;
+    z_ = z;
+  }
+
+  void setRotation(float pitch, float yaw) {
+    pitch_ = pitch;
+    yaw_ = yaw;
+  }
+
+  float getX() const { return x_; }
+  float getY() const { return y_; }
+  float getZ() const { return z_; }
+  float getPitch() const { return pitch_; }
+  float getYaw() const { return yaw_; }
+
+private:
+  float x_;
+  float y_;
+  float z_;
+  float pitch_;
+  float yaw_;
+};
+
+// Camera setup
+Camera camera(0.0f, 0.0f, 10.0f, 0.0f, 0.0f);
+Unit Selection
+
+C++
+// Unit class
+class Unit {
+public:
+  Unit(float x, float y, float z) 
+    : x_(x), y_(y), z_(z), selected_(false) {}
+
+  void select() {
+    selected_ = true;
+  }
+
+  void deselect() {
+    selected_ = false;
+  }
+
+  bool isSelected() const { return selected_; }
+
+  float getX() const { return x_; }
+  float getY() const { return y_; }
+  float getZ() const { return z_; }
+
+private:
+  float x_;
+  float y_;
+  float z_;
+  bool selected_;
+};
+
+// Unit selection
+std::vector<Unit> units;
+units.push_back(Unit(10.0f, 0.0f, 0.0f));
+units.push_back(Unit(20.0f, 0.0f, 0.0f));
+
+// Select a unit
+for (auto& unit : units) {
+  if (unit.getX() == 10.0f && unit.getY() == 0.0f && unit.getZ() == 0.0f) {
+    unit.select();
+  }
+}
+Camera Movement and Unit Selection Handling
+
+C++
+// Handle camera movement and unit selection
+void handleInput() {
+  // Handle camera movement
+  if (IsKeyDown(KEY_W)) {
+    camera.setPosition(camera.getX(), camera.getY() + 1.0f, camera.getZ());
+  }
+  if (IsKeyDown(KEY_S)) {
+    camera.setPosition(camera.getX(), camera.getY() - 1.0f, camera.getZ());
+  }
+  if (IsKeyDown(KEY_A)) {
+    camera.setPosition(camera.getX() - 1.0f, camera.getY(), camera.getZ());
+  }
+  if (IsKeyDown(KEY_D)) {
+    camera.setPosition(camera.getX() + 1.0f, camera.getY(), camera.getZ());
+  }
+  if (IsKeyDown(KEY_Q)) {
+    camera.setRotation(camera.getPitch() - 1.0f, camera.getYaw());
+  }
+  if (IsKeyDown(KEY_E)) {
+    camera.setRotation(camera.getPitch() + 1.0f, camera.getYaw());
+  }
+
+  // Handle unit selection
+  if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+    float mouseX, mouseY;
+    GetMousePosition(&mouseX, &mouseY);
+    Ray ray = GetRayFromMousePosition(mouseX, mouseY);
+    for (auto& unit : units) {
+      if (IsRayIntersectingUnit(ray, unit)) {
+        unit.select();
+      }
+    }
+  }
+}
+Ray Casting
+
+C++
+// Ray class
+class Ray {
+public:
+  Ray(float x, float y, float z, float dx, float dy, float dz) 
+    : x_(x), y_(y), z_(z), dx_(dx), dy_(dy), dz_(dz) {}
+
+  float getX() const { return x_; }
+  float getY() const { return y_; }
+  float getZ() const { return z_; }
+  float getDX() const { return dx_; }
+  float getDY() const { return dy_; }
+  float getDZ() const { return dz_; }
+
+private:
+  float x_;
+  float y_;
+  float z_;
+  float dx_;
+  float dy_;
+  float dz_;
+};
+
+// Get ray from mouse position
+Ray GetRayFromMousePosition(float mouseX, float mouseY) {
+  // Calculate ray origin and direction
+  float rayOriginX = camera.getX();
+  float rayOriginY = camera.getY();
+  float rayOriginZ = camera.getZ();
+  float rayDirectionX = mouseX - camera.getX();
+  float rayDirectionY = mouseY - camera.getY
