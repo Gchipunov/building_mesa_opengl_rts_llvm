@@ -1,4 +1,9 @@
 // main.cpp
+
+// created by Georgiy Chipunov using prompt
+// and got stuck , in bard
+// Code in c a editor like unity ue5 with imgui and node graph and map editor with OpenGL
+
 #include <glad/glad.h> // Must be included before GLFW
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
